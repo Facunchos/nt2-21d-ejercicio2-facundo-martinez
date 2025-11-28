@@ -1,11 +1,106 @@
-<script setup></script>
+<script setup>
+import { ref, computed } from 'vue'
+
+const criterioDeBusqueda = ref('')
+
+// Dos filtros separados
+const filtroNombre = ref('')
+const filtroDoc = ref('')
+
+// Las personas del index.html
+const personas = ref([
+  {
+    nombre: "Daniel",
+    apellido: "Sanchez", 
+    correo: "danielsanchez68@hotmail.com",
+    dni: "20442873"
+  },
+  {
+    nombre: "Juan",
+    apellido: "Perez",
+    correo: "j@p.gmail.com", 
+    dni: "12345678"
+  },
+  {
+    nombre: "Ana",
+    apellido: "Suarez",
+    correo: "a@s.gmail.com",
+    dni: "87654321"
+  },
+  {
+    nombre: "Facundo",
+    apellido: "Martinez",
+    correo: "facundoezequielmartinez@gmail.com",
+    dni: "40900390"
+  }
+])
+
+
+// Filtrado excluyente en tiempo real
+const personasFiltradas = computed(() => {
+  return personas.value.filter((persona) => {
+    let pasaFiltroNombre = true
+    let pasafiltroDoc = true
+    
+    // Filtro por nombre y o apellido
+    if (filtroNombre.value.trim() !== '') {
+      const nombreCompleto = `${persona.nombre} ${persona.apellido}`.toLowerCase()
+      pasaFiltroNombre = nombreCompleto.includes(filtroNombre.value.toLowerCase())
+    }
+    
+    // Filtro por documento
+    if (filtroDoc.value.trim() !== '') {
+      pasafiltroDoc = persona.dni.includes(filtroDoc.value)
+    }
+    
+    // Resultado excluyente (ambos filtros deben pasar)
+    return pasaFiltroNombre && pasafiltroDoc
+  })
+})
+
+// Función para nombre completo
+const getNombre = (persona) => {
+  return `${persona.nombre} ${persona.apellido}`
+}
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <div class="container-fluid mt-3">
+
+    <!-- //filtros -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <input 
+          type="text" 
+          class="form-control" 
+          v-model="filtroNombre"
+          placeholder="Buscar por nombre o apellido"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <input 
+          type="text" 
+          class="form-control" 
+          v-model="filtroDoc"
+          placeholder="Buscar por documento"
+        />
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-4 mb-3" v-for="persona in personasFiltradas" :key="persona.dni">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ getNombre(persona) }}</h5>
+            <p class="card-text">DNI: {{ persona.dni }}</p>
+            <a :href="`mailto:${persona.correo}`" class="card-link">{{ persona.correo }}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>

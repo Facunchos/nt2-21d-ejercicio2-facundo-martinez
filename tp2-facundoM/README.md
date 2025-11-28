@@ -1,3 +1,26 @@
+
+Los pasos a pasos que fui haciendo:
+
+Pase el projecto a vue:
+npm create vue@latest
+
+con el nombre tp2-facundoM
+elegi el basico de vue
+fui siguiendo los pasos que me dio la terminal de vue.
+
+ cd tp2-facundoM
+   npm i
+   npm run dev
+
+
+instale bootstrap:
+npm install bootstrap
+
+importo bootstrap en el main.js
+
+Reemplace el index del vue con el del fork
+
+
 # tp2-facundoM
 
 This template should help get you started developing with Vue 3 in Vite.
