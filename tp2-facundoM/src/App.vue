@@ -62,6 +62,15 @@ const personasFiltradas = computed(() => {
 const getNombre = (persona) => {
   return `${persona.nombre} ${persona.apellido}`
 }
+
+// Advertencia que dispara la alerta por debajo de 3 caracteres
+const mostrarAdvertencia = computed(() => {
+  const nombreTieneMenosDe3 = filtroNombre.value.length > 0 && filtroNombre.value.length < 3
+  const docTieneMenosDe3 = filtroDoc.value.length > 0 && filtroDoc.value.length < 3
+  
+  return nombreTieneMenosDe3 || docTieneMenosDe3
+})
+
 </script>
 
 <template>
@@ -86,6 +95,11 @@ const getNombre = (persona) => {
           placeholder="Buscar por documento"
         />
       </div>
+    </div>
+
+    <!-- la alerta -->
+    <div v-if="mostrarAdvertencia" class="alert alert-warning" role="alert">
+      No se cumplen los criterios minimos para la busqueda
     </div>
     
     <div class="row">
